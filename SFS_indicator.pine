@@ -1,0 +1,21 @@
+//@version=5
+indicator("Kuddus Trend Reversal", overlay=true)
+
+// --- Input Settings ---
+ema1Length = input.int(20, title="EMA Fast", minval=1)
+ema2Length = input.int(50, title="EMA Slow", minval=1)
+
+// --- EMA Calculation ---
+ema1 = ta.ema(close, ema1Length)
+ema2 = ta.ema(close, ema2Length)
+
+// --- Buy/Sell Signal Conditions ---
+bullishCrossover = ta.crossover(ema1, ema2)
+bearishCrossover = ta.crossunder(ema1, ema2)
+
+// --- Plotting ---
+plot(ema1, color=color.green, title="Fast EMA")
+plot(ema2, color=color.red, title="Slow EMA")
+
+plotshape(bullishCrossover, title="Buy Signal", location=location.belowbar, color=color.lime, style=shape.labelup, text="BUY")
+plotshape(bearishCrossover, title="Sell Signal", location=location.abovebar, color=color.red, style=shape.labeldown, text="SELL")
