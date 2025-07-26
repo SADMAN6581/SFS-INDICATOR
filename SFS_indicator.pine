@@ -1,5 +1,5 @@
 //@version=5
-indicator("Kuddus Trend Reversal", overlay=true)
+indicator("SFS STRATEGY", overlay=true)
 
 // --- Input Settings ---
 ema1Length = input.int(20, title="EMA Fast", minval=1)
