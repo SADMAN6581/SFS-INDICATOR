@@ -1,0 +1,35 @@
+//@version=5
+indicator("SFS Indicator v2 - With TP SL", overlay=true)
+
+// Buy/Sell Logic (Dummy Example)
+buySignal = ta.crossover(ta.sma(close, 14), ta.sma(close, 28))
+sellSignal = ta.crossunder(ta.sma(close, 14), ta.sma(close, 28))
+
+plotshape(buySignal, title="Buy Signal", location=location.belowbar, color=color.green, style=shape.labelup, text="BUY")
+plotshape(sellSignal, title="Sell Signal", location=location.abovebar, color=color.red, style=shape.labeldown, text="SELL")
+
+// Risk Management Settings
+riskReward1 = input.float(1.5, "TP1 RR Ratio")
+riskReward2 = input.float(2.0, "TP2 RR Ratio")
+
+// SL Calculation
+longSL = low[1]  // আগের ক্যান্ডেলের লো
+shortSL = high[1]  // আগের ক্যান্ডেলের হাই
+
+// TP Levels Calculation
+longEntry = close
+longTP1 = longEntry + (longEntry - longSL) * riskReward1
+longTP2 = longEntry + (longEntry - longSL) * riskReward2
+
+shortEntry = close
+shortTP1 = shortEntry - (shortSL - shortEntry) * riskReward1
+shortTP2 = shortEntry - (shortSL - shortEntry) * riskReward2
+
+// Plotting TP/SL
+plot(buySignal ? longSL : na, title="SL (Buy)", style=plot.style_linebr, color=color.red)
+plot(buySignal ? longTP1 : na, title="TP1 (Buy)", style=plot.style_linebr, color=color.green)
+plot(buySignal ? longTP2 : na, title="TP2 (Buy)", style=plot.style_linebr, color=color.teal)
+
+plot(sellSignal ? shortSL : na, title="SL (Sell)", style=plot.style_linebr, color=color.red)
+plot(sellSignal ? shortTP1 : na, title="TP1 (Sell)", style=plot.style_linebr, color=color.green)
+plot(sellSignal ? shortTP2 : na, title="TP2 (Sell)", style=plot.style_linebr, color=color.teal)
